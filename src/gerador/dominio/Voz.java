@@ -6,6 +6,19 @@ import java.util.List;
 
 public class Voz {
 
+    private static final int VOLUME_MAXIMO_MIDI = 127;
+    private static final int VOLUME_MINIMO_MIDI = 0;
+    private static final int OITAVA_MINIMA = 0;
+    private static final int OITAVA_MAXIMA = 9;
+
+    private static final int NUMERO_DE_PADROES = 4;
+    private static final int[] OFFSETS_OITAVA_FUGA = {0, -1, -2, -3};
+    private static final double[] PROPORCOES_VOLUME_FUGA = {1.0, 0.8, 0.6, 0.4};
+
+    private static final int INSTRUMENTO_CHURCH_ORGAN = 20;
+    private static final int INSTRUMENTO_PIANO_ACUSTICO = 0;
+    private static final int INSTRUMENTO_FAGOTE = 70;
+
     private final int numero;
     private final List<EventoMusical> eventos;
     private final int atrasoEmBeats;
@@ -14,26 +27,29 @@ public class Voz {
     private int oitavaInicial;
     private int volumeInicial;
 
-    public Voz(int numero, int atrasoEmBeats, int volumeMaximo) {
+    public Voz(int numero, int atrasoEmBeats, int volumeMaximo, int instrumentoBase, int oitavaBase) {
         this.numero = numero;
         this.atrasoEmBeats = Math.max(0, atrasoEmBeats);
         this.eventos = new ArrayList<>();
-        atribuirPadroesDeVoz(numero, volumeMaximo);
+        atribuirPadroesDeVoz(numero, volumeMaximo, instrumentoBase, oitavaBase);
     }
 
-    /**
-     * Padrões de fuga: cada voz subsequente desce 1 oitava e reduz volume proporcionalmente.
-     * Voz 0 usa Cravo; as demais usam instrumentos fixos da fuga.
-     */
-    private void atribuirPadroesDeVoz(int numero, int volumeMaximo) {
-        int[] oitavas = {6, 5, 4, 3};
-        double[] proporcoesVolume = {1.0, 0.8, 0.6, 0.4};
-        int[] instrumentos = {6, 20, 0, 70}; // Cravo, Church Organ, Piano, Fagote
+    /*
+        Padrões de fuga: cada voz subsequente desce 1 oitava e reduz volume proporcionalmente.
+        Voz 0 usa o instrumento configurado pelo usuário; as demais usam instrumentos fixos da fuga.
+    */
+    private void atribuirPadroesDeVoz(int numero, int volumeMaximo, int instrumentoBase, int oitavaBase) {
+        int[] instrumentos = {
+            instrumentoBase, 
+            INSTRUMENTO_CHURCH_ORGAN, 
+            INSTRUMENTO_PIANO_ACUSTICO, 
+            INSTRUMENTO_FAGOTE
+        };
 
-        int indice = numero % 4;
-        this.oitavaInicial = oitavas[indice];
-        this.volumeInicial = (int) Math.round(volumeMaximo * proporcoesVolume[indice]);
-        this.volumeInicial = Math.max(0, Math.min(127, this.volumeInicial));
+        int indice = numero % NUMERO_DE_PADROES;
+        this.oitavaInicial = Math.max(OITAVA_MINIMA, Math.min(OITAVA_MAXIMA, oitavaBase + OFFSETS_OITAVA_FUGA[indice]));
+        this.volumeInicial = (int) Math.round(volumeMaximo * PROPORCOES_VOLUME_FUGA[indice]);
+        this.volumeInicial = Math.max(VOLUME_MINIMO_MIDI, Math.min(VOLUME_MAXIMO_MIDI, this.volumeInicial));
         this.instrumentoInicial = instrumentos[indice];
     }
 
