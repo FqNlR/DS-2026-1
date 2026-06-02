@@ -38,12 +38,61 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
 
     private Timer timerProgresso;
 
+    // Configurações de Janela
+    private static final int LARGURA_JANELA_PADRAO = 900;
+    private static final int ALTURA_JANELA_PADRAO = 700;
+    private static final int LARGURA_JANELA_MINIMA = 750;
+    private static final int ALTURA_JANELA_MINIMA = 550;
+
+    // Configurações Musicais Iniciais e Limites
+    private static final int BPM_INICIAL = 120;
+    private static final int BPM_MINIMO = 20;
+    private static final int BPM_MAXIMO = 300;
+    private static final int BPM_PASSO = 5;
+
+    private static final int VOLUME_INICIAL = 100;
+    private static final int VOLUME_MINIMO = 0;
+    private static final int VOLUME_MAXIMO = 127;
+    private static final int VOLUME_PASSO = 5;
+
+    private static final int OITAVA_INICIAL = 6;
+    private static final int OITAVA_MINIMA = 0;
+    private static final int OITAVA_MAXIMA = 9;
+    private static final int OITAVA_PASSO = 1;
+
+    // UI
+    private static final int LARGURA_SCROLL_TEXTO = 800;
+    private static final int ALTURA_SCROLL_TEXTO = 250;
+    private static final int TIMER_PROGRESSO_DELAY_MS = 200;
+
+    // Layouts e Espaçamentos
+    private static final int ESPACAMENTO_PRINCIPAL = 8;
+    private static final int ESPACAMENTO_BORDA_EXTERNA = 10;
+    private static final int ESPACAMENTO_PAINEIS = 4;
+    private static final int ESPACAMENTO_BOTOES = 6;
+    private static final int ESPACAMENTO_LEGENDA = 4;
+
+    // Fontes e Texto
+    private static final int TAMANHO_FONTE_TEXTO = 14;
+    private static final int TAMANHO_FONTE_LEGENDA = 11;
+    private static final int TAMANHO_FONTE_LOG = 12;
+    private static final int TAMANHO_TABULACAO = 4;
+    private static final int LOG_LINHAS = 5;
+    private static final int LOG_COLUNAS = 60;
+
+    // Cores
+    private static final Color COR_FUNDO_LOG = new Color(245, 245, 245);
+
+    // Barra de Progresso
+    private static final int PROGRESSO_MINIMO = 0;
+    private static final int PROGRESSO_MAXIMO = 100;
+
     private static final String[] INSTRUMENTOS = {
-            "0 - Piano", "6 - Cravo (Harpsichord)", "15 - Tubular Bells",
-            "20 - Church Organ", "22 - Harmonica", "24 - Tango Accordion",
-            "40 - Violino", "42 - Cello", "56 - Trompete",
-            "65 - Sax Alto", "70 - Fagote (Bassoon)", "73 - Flauta",
-            "110 - Gaita de Foles", "114 - Agogo", "123 - Ondas do Mar"
+        "0 - Piano", "6 - Cravo (Harpsichord)", "15 - Tubular Bells",
+        "20 - Church Organ", "22 - Harmonica", "24 - Tango Accordion",
+        "40 - Violino", "42 - Cello", "56 - Trompete",
+        "65 - Sax Alto", "70 - Fagote (Bassoon)", "73 - Flauta",
+        "110 - Gaita de Foles", "114 - Agogo", "123 - Ondas do Mar"
     };
 
     public TelaPrincipal() {
@@ -60,8 +109,8 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     private void configurarJanela() {
         setTitle("Gerador de Musica a partir de Texto - Fuga de Bach");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        setSize(900, 700);
-        setMinimumSize(new Dimension(750, 550));
+        setSize(LARGURA_JANELA_PADRAO, ALTURA_JANELA_PADRAO);
+        setMinimumSize(new Dimension(LARGURA_JANELA_MINIMA, ALTURA_JANELA_MINIMA));
         setLocationRelativeTo(null);
 
         addWindowListener(new WindowAdapter() {
@@ -75,8 +124,10 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     }
 
     private void construirInterface() {
-        JPanel painelPrincipal = new JPanel(new BorderLayout(8, 8));
-        painelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
+        JPanel painelPrincipal = new JPanel(new BorderLayout(ESPACAMENTO_PRINCIPAL, ESPACAMENTO_PRINCIPAL));
+        painelPrincipal.setBorder(new EmptyBorder(
+                ESPACAMENTO_BORDA_EXTERNA, ESPACAMENTO_BORDA_EXTERNA, 
+                ESPACAMENTO_BORDA_EXTERNA, ESPACAMENTO_BORDA_EXTERNA));
 
         painelPrincipal.add(criarPainelSuperior(), BorderLayout.NORTH);
         painelPrincipal.add(criarPainelCentral(), BorderLayout.CENTER);
@@ -86,23 +137,23 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     }
 
     private JPanel criarPainelSuperior() {
-        JPanel painel = new JPanel(new BorderLayout(8, 4));
+        JPanel painel = new JPanel(new BorderLayout(ESPACAMENTO_PRINCIPAL, ESPACAMENTO_PAINEIS));
 
-        JPanel painelConfig = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 4));
+        JPanel painelConfig = new JPanel(new FlowLayout(FlowLayout.LEFT, ESPACAMENTO_BORDA_EXTERNA, ESPACAMENTO_PAINEIS));
         painelConfig.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "Configuracoes Iniciais",
                 TitledBorder.LEFT, TitledBorder.TOP));
 
         painelConfig.add(new JLabel("BPM:"));
-        spinnerBpm = new JSpinner(new SpinnerNumberModel(120, 20, 300, 5));
+        spinnerBpm = new JSpinner(new SpinnerNumberModel(BPM_INICIAL, BPM_MINIMO, BPM_MAXIMO, BPM_PASSO));
         painelConfig.add(spinnerBpm);
 
         painelConfig.add(new JLabel("Volume:"));
-        spinnerVolume = new JSpinner(new SpinnerNumberModel(100, 0, 127, 5));
+        spinnerVolume = new JSpinner(new SpinnerNumberModel(VOLUME_INICIAL, VOLUME_MINIMO, VOLUME_MAXIMO, VOLUME_PASSO));
         painelConfig.add(spinnerVolume);
 
         painelConfig.add(new JLabel("Oitava:"));
-        spinnerOitava = new JSpinner(new SpinnerNumberModel(6, 0, 9, 1));
+        spinnerOitava = new JSpinner(new SpinnerNumberModel(OITAVA_INICIAL, OITAVA_MINIMA, OITAVA_MAXIMA, OITAVA_PASSO));
         painelConfig.add(spinnerOitava);
 
         painelConfig.add(new JLabel("Instrumento:"));
@@ -111,7 +162,7 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
 
         painel.add(painelConfig, BorderLayout.CENTER);
 
-        JPanel painelArquivo = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 4));
+        JPanel painelArquivo = new JPanel(new FlowLayout(FlowLayout.RIGHT, ESPACAMENTO_BOTOES, ESPACAMENTO_PAINEIS));
         botaoImportarTxt = new JButton("Importar TXT");
         botaoSalvarTxt = new JButton("Salvar TXT");
         botaoExportarMidi = new JButton("Exportar MIDI");
@@ -127,43 +178,45 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     }
 
     private JPanel criarPainelCentral() {
-        JPanel painel = new JPanel(new BorderLayout(4, 4));
+        JPanel painel = new JPanel(new BorderLayout(ESPACAMENTO_PAINEIS, ESPACAMENTO_PAINEIS));
         painel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "Texto de Entrada (cada linha = uma voz)",
                 TitledBorder.LEFT, TitledBorder.TOP));
 
         campoTexto = new JTextArea();
-        campoTexto.setFont(new Font("Consolas", Font.PLAIN, 14));
+        campoTexto.setFont(new Font("Consolas", Font.PLAIN, TAMANHO_FONTE_TEXTO));
         campoTexto.setLineWrap(true);
         campoTexto.setWrapStyleWord(true);
-        campoTexto.setTabSize(4);
+        campoTexto.setTabSize(TAMANHO_TABULACAO);
 
         campoTexto.setText(
-                "[0] C D E F G A B C\n" +
-                        "[4] G A B C D E F G");
+            "[0] C D E F G A B C\n" +
+            "[4] G A B C D E F G"
+        );
 
         JScrollPane scroll = new JScrollPane(campoTexto);
-        scroll.setPreferredSize(new Dimension(800, 250));
+        scroll.setPreferredSize(new Dimension(LARGURA_SCROLL_TEXTO, ALTURA_SCROLL_TEXTO));
         painel.add(scroll, BorderLayout.CENTER);
 
         JLabel legenda = new JLabel(
-                "<html><b>Legenda:</b> A-H = notas | a-h = pausa | Mb = Mib | " +
-                        "Espaco = 2x volume | ? = +oitava | V = -oitava | " +
-                        "> = +BPM | < = -BPM | [n] = atraso</html>");
-        legenda.setFont(new Font("SansSerif", Font.PLAIN, 11));
-        legenda.setBorder(new EmptyBorder(4, 4, 0, 0));
+            "<html><b>Legenda:</b> A-H = notas | a-h = pausa | Mb = Mib | " +
+            "Espaco = 2x volume | ? = +oitava | V = -oitava | " +
+            "> = +BPM | < = -BPM | [n] = atraso</html>"
+        );
+        legenda.setFont(new Font("SansSerif", Font.PLAIN, TAMANHO_FONTE_LEGENDA));
+        legenda.setBorder(new EmptyBorder(ESPACAMENTO_LEGENDA, ESPACAMENTO_LEGENDA, 0, 0));
         painel.add(legenda, BorderLayout.SOUTH);
 
         return painel;
     }
 
     private JPanel criarPainelInferior() {
-        JPanel painel = new JPanel(new BorderLayout(4, 6));
+        JPanel painel = new JPanel(new BorderLayout(ESPACAMENTO_PAINEIS, ESPACAMENTO_BOTOES));
 
-        JPanel painelControles = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 4));
-        botaoPlay = new JButton("Play");
-        botaoPause = new JButton("Pause");
-        botaoParar = new JButton("Parar");
+        JPanel painelControles = new JPanel(new FlowLayout(FlowLayout.CENTER, ESPACAMENTO_PRINCIPAL, ESPACAMENTO_PAINEIS));
+        botaoPlay = new JButton("> Play");
+        botaoPause = new JButton("|| Pause");
+        botaoParar = new JButton("[] Parar");
 
         botaoPause.setEnabled(false);
         botaoParar.setEnabled(false);
@@ -172,17 +225,17 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
         painelControles.add(botaoPause);
         painelControles.add(botaoParar);
 
-        barraProgresso = new JProgressBar(0, 100);
+        barraProgresso = new JProgressBar(PROGRESSO_MINIMO, PROGRESSO_MAXIMO);
         barraProgresso.setStringPainted(true);
         barraProgresso.setString("Pronto");
         painelControles.add(barraProgresso);
 
         painel.add(painelControles, BorderLayout.NORTH);
 
-        areaLog = new JTextArea(5, 60);
-        areaLog.setFont(new Font("Consolas", Font.PLAIN, 12));
+        areaLog = new JTextArea(LOG_LINHAS, LOG_COLUNAS);
+        areaLog.setFont(new Font("Consolas", Font.PLAIN, TAMANHO_FONTE_LOG));
         areaLog.setEditable(false);
-        areaLog.setBackground(new Color(245, 245, 245));
+        areaLog.setBackground(COR_FUNDO_LOG);
 
         JScrollPane scrollLog = new JScrollPane(areaLog);
         scrollLog.setBorder(BorderFactory.createTitledBorder(
@@ -321,8 +374,7 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     }
 
     private int extrairNumeroInstrumento(String item) {
-        if (item == null)
-            return 0;
+        if (item == null) return 0;
         try {
             return Integer.parseInt(item.split(" - ")[0].trim());
         } catch (NumberFormatException e) {
@@ -340,7 +392,7 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     }
 
     private void configurarTimerProgresso() {
-        timerProgresso = new Timer(200, e -> {
+        timerProgresso = new Timer(TIMER_PROGRESSO_DELAY_MS, e -> {
             if (controlador.getEstadoAtual() == Estado.REPRODUZINDO) {
                 double progresso = controlador.getProgresso();
                 barraProgresso.setValue((int) (progresso * 100));
