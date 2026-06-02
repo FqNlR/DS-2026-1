@@ -1,9 +1,10 @@
 package gerador.audio;
 
-import gerador.dominio.*;
+import java.util.List;
 
 import javax.sound.midi.*;
-import java.util.List;
+
+import gerador.dominio.*;
 
 public class ReprodutorMidi implements SaidaMusical {
 
@@ -11,6 +12,13 @@ public class ReprodutorMidi implements SaidaMusical {
     private Sequence sequenciaAtual;
     private long posicaoPausada;
     private boolean pausado;
+
+    private static final int MAX_VOZES = 15;
+    private static final int CANAL_PERCUSSAO = 9;
+    private static final int TIPO_META_MESSAGE_TEMPO = 0x51;
+    private static final int MICROSEGUNDOS_POR_MINUTO = 60_000_000;
+    private static final int TAMANHO_MENSAGEM_TEMPO = 3;
+    private static final int MASCARA_BYTE = 0xFF;
 
     public ReprodutorMidi() {
         this.posicaoPausada = 0;
@@ -69,9 +77,11 @@ public class ReprodutorMidi implements SaidaMusical {
 
     @Override
     public double getProgresso() {
-        if (sequencer == null || sequenciaAtual == null) return 0.0;
+        if (sequencer == null || sequenciaAtual == null)
+            return 0.0;
         long total = sequencer.getTickLength();
-        if (total == 0) return 0.0;
+        if (total == 0)
+            return 0.0;
         long atual = pausado ? posicaoPausada : sequencer.getTickPosition();
         return (double) atual / total;
     }
@@ -85,34 +95,49 @@ public class ReprodutorMidi implements SaidaMusical {
         return sequenciaAtual;
     }
 
-    /**
-     * Cada voz vira um canal MIDI separado (máximo 15 vozes).
-     * Canal 9 é pulado pois é reservado para percussão no General MIDI.
-     */
+    
+     //Cada voz vira um canal MIDI separado (máximo 15 vozes). Canal 9 é pulado pois é reservado para percussão no General MIDI.
+     
     public Sequence construirSequenciaMidi(Partitura partitura) throws InvalidMidiDataException {
         Sequence sequence = new Sequence(Sequence.PPQ, Nota.DURACAO_PADRAO);
+        
+        // Trilha 0 dedicada para eventos globais como o mapa de BPM
+        Track trilhaGlobal = sequence.createTrack();
+        
         List<Voz> vozes = partitura.getVozes();
 
-        for (int i = 0; i < vozes.size() && i < 15; i++) {
+        for (int i = 0; i < vozes.size() && i < MAX_VOZES; i++) {
             Voz voz = vozes.get(i);
-            int canal = (i >= 9) ? i + 1 : i; // Pula canal 9 (percussão)
+            int canal = (i >= CANAL_PERCUSSAO) ? i + 1 : i; // Pula canal de percussão
             Track track = sequence.createTrack();
 
-            adicionarEventosDaVoz(track, voz, canal, partitura.getConfiguracao());
+            adicionarEventosDaVoz(track, trilhaGlobal, voz, canal, partitura.getConfiguracao());
         }
 
         return sequence;
     }
 
-    private void adicionarEventosDaVoz(Track track, Voz voz, int canal,
-                                        ConfiguracaoMusical config)
+    private void adicionarEventosDaVoz(Track track, Track trilhaGlobal, Voz voz, int canal,
+            ConfiguracaoMusical config)
             throws InvalidMidiDataException {
 
         long tickAtual = 0;
         int instrumentoAtual = -1;
 
         for (EventoMusical evento : voz.getEventos()) {
-            if (evento instanceof Nota) {
+            if (evento instanceof MudancaDeBpm) {
+                MudancaDeBpm mudanca = (MudancaDeBpm) evento;
+                int microsPorBeat = MICROSEGUNDOS_POR_MINUTO / mudanca.getNovoBpm();
+                byte[] dados = {
+                        (byte) ((microsPorBeat >> 16) & MASCARA_BYTE),
+                        (byte) ((microsPorBeat >> 8) & MASCARA_BYTE),
+                        (byte) (microsPorBeat & MASCARA_BYTE)
+                };
+                MetaMessage tempoMsg = new MetaMessage();
+                tempoMsg.setMessage(TIPO_META_MESSAGE_TEMPO, dados, TAMANHO_MENSAGEM_TEMPO);
+                trilhaGlobal.add(new MidiEvent(tempoMsg, tickAtual));
+
+            } else if (evento instanceof Nota) {
                 Nota nota = (Nota) evento;
 
                 if (nota.getInstrumento() != instrumentoAtual) {

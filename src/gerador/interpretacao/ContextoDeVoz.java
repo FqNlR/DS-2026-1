@@ -1,11 +1,14 @@
 package gerador.interpretacao;
 
 import gerador.dominio.EventoMusical;
+import gerador.dominio.MudancaDeBpm;
 import gerador.dominio.Nota;
 import gerador.dominio.Pausa;
 import gerador.dominio.Voz;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ContextoDeVoz {
@@ -25,6 +28,15 @@ public class ContextoDeVoz {
         NOTAS_MIDI.put("H", 10);  // Si bemol (Bb)
     }
 
+    private static final int VOLUME_MAXIMO = 127;
+    private static final int NOTAS_POR_OITAVA = 12;
+    private static final int OITAVA_MINIMA = 0;
+    private static final int OITAVA_MAXIMA = 9;
+    private static final int BPM_MINIMO = 20;
+    private static final int BPM_MAXIMO = 300;
+    private static final int INSTRUMENTO_MINIMO = 0;
+    private static final int INSTRUMENTO_MAXIMO = 127;
+
     private final Voz voz;
     private int instrumentoAtual;
     private int oitavaAtual;
@@ -36,6 +48,8 @@ public class ContextoDeVoz {
 
     private String textoCompleto;
     private int posicaoAtual;
+
+    private final List<String> avisos = new ArrayList<>();
 
     public ContextoDeVoz(Voz voz, int bpmInicial) {
         this.voz = voz;
@@ -52,8 +66,8 @@ public class ContextoDeVoz {
         Integer valorBase = NOTAS_MIDI.get(nomeNota);
         if (valorBase == null) return;
 
-        int pitchMidi = (oitavaAtual + 1) * 12 + valorBase;
-        pitchMidi = Math.max(0, Math.min(127, pitchMidi));
+        int pitchMidi = (oitavaAtual + 1) * NOTAS_POR_OITAVA + valorBase;
+        pitchMidi = Math.max(0, Math.min(VOLUME_MAXIMO, pitchMidi));
 
         Nota nota = new Nota(pitchMidi, volumeAtual, instrumentoAtual);
         voz.adicionarEvento(nota);
@@ -77,11 +91,11 @@ public class ContextoDeVoz {
 
     public void dobrarVolume() {
         int novoVolume = volumeAtual * 2;
-        volumeAtual = Math.min(novoVolume, 127);
+        volumeAtual = Math.min(novoVolume, VOLUME_MAXIMO);
     }
 
     public void aumentarOitava() {
-        if (oitavaAtual < 9) {
+        if (oitavaAtual < OITAVA_MAXIMA) {
             oitavaAtual++;
         } else {
             oitavaAtual = oitavaPadrao;
@@ -89,7 +103,7 @@ public class ContextoDeVoz {
     }
 
     public void diminuirOitava() {
-        if (oitavaAtual > 0) {
+        if (oitavaAtual > OITAVA_MINIMA) {
             oitavaAtual--;
         } else {
             oitavaAtual = oitavaPadrao;
@@ -97,15 +111,17 @@ public class ContextoDeVoz {
     }
 
     public void trocarInstrumento(int novoInstrumento) {
-        instrumentoAtual = Math.max(0, Math.min(127, novoInstrumento));
+        instrumentoAtual = Math.max(INSTRUMENTO_MINIMO, Math.min(INSTRUMENTO_MAXIMO, novoInstrumento));
     }
 
     public void aumentarBpm(int incremento) {
-        bpmAtual = Math.min(300, bpmAtual + incremento);
+        bpmAtual = Math.min(BPM_MAXIMO, bpmAtual + incremento);
+        voz.adicionarEvento(new MudancaDeBpm(bpmAtual));
     }
 
     public void diminuirBpm(int decremento) {
-        bpmAtual = Math.max(20, bpmAtual - decremento);
+        bpmAtual = Math.max(BPM_MINIMO, bpmAtual - decremento);
+        voz.adicionarEvento(new MudancaDeBpm(bpmAtual));
     }
 
     public boolean ultimoFoiNota() {
@@ -154,5 +170,13 @@ public class ContextoDeVoz {
 
     public void avancarPosicao() {
         posicaoAtual++;
+    }
+
+    public void registrarAviso(String aviso) {
+        avisos.add(aviso);
+    }
+
+    public List<String> getAvisos() {
+        return avisos;
     }
 }

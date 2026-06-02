@@ -1,16 +1,19 @@
 package gerador.interpretacao;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import gerador.dominio.ConfiguracaoMusical;
 import gerador.dominio.Partitura;
 import gerador.dominio.Pausa;
 import gerador.dominio.Voz;
 import gerador.mapeamento.TabelaDeMapeamento;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+/*
+    Transforma texto em Partitura. Cada linha é uma voz independente.
+*/
 public class InterpretadorDeTexto {
 
     private static final Pattern PADRAO_ATRASO = Pattern.compile("^\\[(\\d+)]\\s*");
@@ -36,7 +39,8 @@ public class InterpretadorDeTexto {
         int numeroVoz = 0;
 
         for (String linha : linhas) {
-            if (linha.trim().isEmpty()) continue;
+            if (linha.trim().isEmpty())
+                continue;
 
             Voz voz = processarLinha(linha, numeroVoz, configuracao);
             partitura.adicionarVoz(voz);
@@ -60,7 +64,7 @@ public class InterpretadorDeTexto {
             textoParaProcessar = linha.substring(matcher.end());
         }
 
-        Voz voz = new Voz(numeroVoz, atraso, config.getVolume());
+        Voz voz = new Voz(numeroVoz, atraso, config.getVolume(), config.getInstrumento(), config.getOitava());
         ContextoDeVoz contexto = new ContextoDeVoz(voz, config.getBpm());
         contexto.setTextoCompleto(textoParaProcessar);
 
@@ -76,6 +80,10 @@ public class InterpretadorDeTexto {
 
             // Atualizar posição caso a regra tenha avançado (ex: "Mb" consome 2 chars)
             i = contexto.getPosicaoAtual();
+        }
+
+        for (String aviso : contexto.getAvisos()) {
+            logDeErros.add("Voz " + numeroVoz + ": " + aviso);
         }
 
         return voz;
