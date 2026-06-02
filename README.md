@@ -5,6 +5,6 @@ Projeto desenvolvido para a disciplina de Desenvolvimento de Software da UFRGS.
 
 Integrantes
 
-Erick Gustavo de Almeida Franco
-Felipe Lago Silva
-Luiz Roberto Rolian Schardosim
+- Erick Gustavo de Almeida Franco
+- Felipe Lago Silva 
+- Luiz Roberto Rolian Schardosim
