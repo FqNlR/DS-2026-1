@@ -1,17 +1,18 @@
 package gerador.ui;
 
-import gerador.arquivo.GerenciadorDeArquivos;
-import gerador.controlador.ControladorMusical;
-import gerador.controlador.ControladorMusical.Estado;
-import gerador.dominio.ConfiguracaoMusical;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
+import gerador.arquivo.GerenciadorDeArquivos;
+import gerador.controlador.ControladorMusical;
+import gerador.controlador.ControladorMusical.Estado;
+import gerador.dominio.ConfiguracaoMusical;
 
 public class TelaPrincipal extends JFrame implements ControladorMusical.Observador {
 
@@ -38,11 +39,11 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     private Timer timerProgresso;
 
     private static final String[] INSTRUMENTOS = {
-        "0 - Piano", "6 - Cravo (Harpsichord)", "15 - Tubular Bells",
-        "20 - Church Organ", "22 - Harmonica", "24 - Tango Accordion",
-        "40 - Violino", "42 - Cello", "56 - Trompete",
-        "65 - Sax Alto", "70 - Fagote (Bassoon)", "73 - Flauta",
-        "110 - Gaita de Foles", "114 - Agogo", "123 - Ondas do Mar"
+            "0 - Piano", "6 - Cravo (Harpsichord)", "15 - Tubular Bells",
+            "20 - Church Organ", "22 - Harmonica", "24 - Tango Accordion",
+            "40 - Violino", "42 - Cello", "56 - Trompete",
+            "65 - Sax Alto", "70 - Fagote (Bassoon)", "73 - Flauta",
+            "110 - Gaita de Foles", "114 - Agogo", "123 - Ondas do Mar"
     };
 
     public TelaPrincipal() {
@@ -138,19 +139,17 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
         campoTexto.setTabSize(4);
 
         campoTexto.setText(
-            "[0] C D E F G A B C\n" +
-            "[4] G A B C D E F G"
-        );
+                "[0] C D E F G A B C\n" +
+                        "[4] G A B C D E F G");
 
         JScrollPane scroll = new JScrollPane(campoTexto);
         scroll.setPreferredSize(new Dimension(800, 250));
         painel.add(scroll, BorderLayout.CENTER);
 
         JLabel legenda = new JLabel(
-            "<html><b>Legenda:</b> A-H = notas | a-h = pausa | Mb = Mi♭ | " +
-            "Espaço = 2× volume | ? = +oitava | V = −oitava | " +
-            "> = +BPM | < = −BPM | [n] = atraso</html>"
-        );
+                "<html><b>Legenda:</b> A-H = notas | a-h = pausa | Mb = Mi♭ | " +
+                        "Espaço = 2× volume | ? = +oitava | V = −oitava | " +
+                        "> = +BPM | < = −BPM | [n] = atraso</html>");
         legenda.setFont(new Font("SansSerif", Font.PLAIN, 11));
         legenda.setBorder(new EmptyBorder(4, 4, 0, 0));
         painel.add(legenda, BorderLayout.SOUTH);
@@ -162,9 +161,9 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
         JPanel painel = new JPanel(new BorderLayout(4, 6));
 
         JPanel painelControles = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 4));
-        botaoPlay = new JButton("▶ Play");
-        botaoPause = new JButton("⏸ Pause");
-        botaoParar = new JButton("⏹ Parar");
+        botaoPlay = new JButton("Play");
+        botaoPause = new JButton("Pause");
+        botaoParar = new JButton("Parar");
 
         botaoPause.setEnabled(false);
         botaoParar.setEnabled(false);
@@ -322,7 +321,8 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     }
 
     private int extrairNumeroInstrumento(String item) {
-        if (item == null) return 0;
+        if (item == null)
+            return 0;
         try {
             return Integer.parseInt(item.split(" - ")[0].trim());
         } catch (NumberFormatException e) {
