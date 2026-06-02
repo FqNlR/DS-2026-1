@@ -58,7 +58,7 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     }
 
     private void configurarJanela() {
-        setTitle("Gerador de Música a partir de Texto — Fuga de Bach");
+        setTitle("Gerador de Musica a partir de Texto - Fuga de Bach");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setSize(900, 700);
         setMinimumSize(new Dimension(750, 550));
@@ -90,7 +90,7 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
 
         JPanel painelConfig = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 4));
         painelConfig.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Configurações Iniciais",
+                BorderFactory.createEtchedBorder(), "Configuracoes Iniciais",
                 TitledBorder.LEFT, TitledBorder.TOP));
 
         painelConfig.add(new JLabel("BPM:"));
@@ -147,9 +147,9 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
         painel.add(scroll, BorderLayout.CENTER);
 
         JLabel legenda = new JLabel(
-                "<html><b>Legenda:</b> A-H = notas | a-h = pausa | Mb = Mi♭ | " +
-                        "Espaço = 2× volume | ? = +oitava | V = −oitava | " +
-                        "> = +BPM | < = −BPM | [n] = atraso</html>");
+                "<html><b>Legenda:</b> A-H = notas | a-h = pausa | Mb = Mib | " +
+                        "Espaco = 2x volume | ? = +oitava | V = -oitava | " +
+                        "> = +BPM | < = -BPM | [n] = atraso</html>");
         legenda.setFont(new Font("SansSerif", Font.PLAIN, 11));
         legenda.setBorder(new EmptyBorder(4, 4, 0, 0));
         painel.add(legenda, BorderLayout.SOUTH);
@@ -213,7 +213,7 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
 
         String texto = campoTexto.getText();
         if (texto == null || texto.isBlank()) {
-            adicionarLog("⚠ Insira um texto antes de reproduzir.");
+            adicionarLog("! Insira um texto antes de reproduzir.");
             return;
         }
 
@@ -235,16 +235,16 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
         if (conteudo != null) {
             campoTexto.setText(conteudo);
             botaoSalvarTxt.setEnabled(true);
-            adicionarLog("✔ Arquivo importado: " + gerenciadorArquivos.getNomeArquivoOriginal());
+            adicionarLog("Ok: Arquivo importado: " + gerenciadorArquivos.getNomeArquivoOriginal());
         }
     }
 
     private void reagirAoSalvarTxt() {
         boolean sucesso = gerenciadorArquivos.salvarTextoOriginal(campoTexto.getText());
         if (sucesso) {
-            adicionarLog("✔ Arquivo salvo com sucesso.");
+            adicionarLog("Ok: Arquivo salvo com sucesso.");
         } else {
-            adicionarLog("✖ Erro ao salvar o arquivo.");
+            adicionarLog("X Erro ao salvar o arquivo.");
         }
     }
 
@@ -252,7 +252,7 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
         if (!controlador.temPartitura()) {
             String texto = campoTexto.getText();
             if (texto == null || texto.isBlank()) {
-                adicionarLog("⚠ Insira um texto antes de exportar.");
+                adicionarLog("! Insira um texto antes de exportar.");
                 return;
             }
             ConfiguracaoMusical config = obterConfiguracaoDaInterface();
@@ -271,21 +271,21 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
         SwingUtilities.invokeLater(() -> {
             switch (novoEstado) {
                 case REPRODUZINDO:
-                    botaoPlay.setText("▶ Play");
+                    botaoPlay.setText("> Play");
                     botaoPlay.setEnabled(false);
                     botaoPause.setEnabled(true);
                     botaoParar.setEnabled(true);
                     barraProgresso.setString("Reproduzindo...");
                     break;
                 case PAUSADO:
-                    botaoPlay.setText("▶ Retomar");
+                    botaoPlay.setText("> Retomar");
                     botaoPlay.setEnabled(true);
                     botaoPause.setEnabled(false);
                     botaoParar.setEnabled(true);
                     barraProgresso.setString("Pausado");
                     break;
                 case PARADO:
-                    botaoPlay.setText("▶ Play");
+                    botaoPlay.setText("> Play");
                     botaoPlay.setEnabled(true);
                     botaoPause.setEnabled(false);
                     botaoParar.setEnabled(false);
@@ -298,14 +298,14 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
 
     @Override
     public void aoOcorrerErro(String mensagem) {
-        SwingUtilities.invokeLater(() -> adicionarLog("✖ " + mensagem));
+        SwingUtilities.invokeLater(() -> adicionarLog("X " + mensagem));
     }
 
     @Override
     public void aoReceberLog(List<String> mensagens) {
         SwingUtilities.invokeLater(() -> {
             for (String msg : mensagens) {
-                adicionarLog("ℹ " + msg);
+                adicionarLog("i " + msg);
             }
         });
     }
