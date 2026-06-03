@@ -11,6 +11,9 @@ public class ConfiguracaoMusical {
     public static final int OITAVA_MINIMA = 0;
     public static final int BPM_MINIMO = 20;
     public static final int BPM_MAXIMO = 300;
+    public static final int VOLUME_MINIMO = 0;
+    public static final int INSTRUMENTO_MINIMO = 0;
+    public static final int INSTRUMENTO_MAXIMO = 127;
 
     private int bpm;
     private int volume;
@@ -46,7 +49,7 @@ public class ConfiguracaoMusical {
     }
 
     private static int limitarVolume(int valor) {
-        return Math.max(0, Math.min(VOLUME_MAXIMO, valor));
+        return Math.max(VOLUME_MINIMO, Math.min(VOLUME_MAXIMO, valor));
     }
 
     private static int limitarOitava(int valor) {
@@ -55,7 +58,7 @@ public class ConfiguracaoMusical {
 
     //127 é o valor máximo perimitido pelo general MIDI
     private static int limitarInstrumento(int valor) {
-        return Math.max(0, Math.min(127, valor));
+        return Math.max(INSTRUMENTO_MINIMO, Math.min(INSTRUMENTO_MAXIMO, valor));
     }
 
     public ConfiguracaoMusical copiar() {
