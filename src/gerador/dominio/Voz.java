@@ -18,28 +18,28 @@ public class Voz {
     private int oitavaInicial;
     private int volumeInicial;
 
-    public Voz(int numero, int atrasoEmBeats, int volumeMaximo, int instrumentoBase, int oitavaBase) {
-        this.numero = numero;
-        this.atrasoEmBeats = Math.max(0, atrasoEmBeats);
+    public Voz(ParametrosVoz parametros) {
+        this.numero = parametros.getNumero();
+        this.atrasoEmBeats = Math.max(0, parametros.getAtrasoEmBeats());
         this.eventos = new ArrayList<>();
-        atribuirPadroesDeVoz(numero, volumeMaximo, instrumentoBase, oitavaBase);
+        atribuirPadroesDeVoz(parametros);
     }
 
     /*
         Padrões de fuga: cada voz subsequente desce 1 oitava e reduz volume proporcionalmente.
         Voz 0 usa o instrumento configurado pelo usuário; as demais usam instrumentos fixos da fuga.
     */
-    private void atribuirPadroesDeVoz(int numero, int volumeMaximo, int instrumentoBase, int oitavaBase) {
+    private void atribuirPadroesDeVoz(ParametrosVoz parametros) {
         int[] instrumentos = {
-            instrumentoBase, 
+            parametros.getInstrumentoBase(), 
             InstrumentoMidi.CHURCH_ORGAN.getCodigo(), 
             InstrumentoMidi.PIANO.getCodigo(), 
             InstrumentoMidi.FAGOTE.getCodigo()
         };
 
-        int indice = numero % NUMERO_DE_PADROES;
-        this.oitavaInicial = Math.max(MidiConstantes.VALOR_MINIMO, Math.min(9, oitavaBase + OFFSETS_OITAVA_FUGA[indice]));
-        this.volumeInicial = (int) Math.round(volumeMaximo * PROPORCOES_VOLUME_FUGA[indice]);
+        int indice = parametros.getNumero() % NUMERO_DE_PADROES;
+        this.oitavaInicial = Math.max(MidiConstantes.VALOR_MINIMO, Math.min(9, parametros.getOitavaBase() + OFFSETS_OITAVA_FUGA[indice]));
+        this.volumeInicial = (int) Math.round(parametros.getVolumeMaximo() * PROPORCOES_VOLUME_FUGA[indice]);
         this.volumeInicial = Math.max(MidiConstantes.VALOR_MINIMO, Math.min(MidiConstantes.VALOR_MAXIMO, this.volumeInicial));
         this.instrumentoInicial = instrumentos[indice];
     }

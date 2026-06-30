@@ -15,6 +15,7 @@ import gerador.controlador.ControladorMusical.Estado;
 import gerador.dominio.ConfiguracaoMusical;
 import gerador.dominio.InstrumentoMidi;
 import gerador.dominio.MidiConstantes;
+import gerador.dominio.ParametrosConfiguracao;
 
 public class TelaPrincipal extends JFrame implements ControladorMusical.Observador {
 
@@ -372,7 +373,7 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
         int instrumento = extrairNumeroInstrumento(
                 (String) comboInstrumento.getSelectedItem());
 
-        return new ConfiguracaoMusical(bpm, volume, oitava, instrumento);
+        return new ConfiguracaoMusical(new ParametrosConfiguracao(bpm, volume, oitava, instrumento));
     }
 
     private int extrairNumeroInstrumento(String item) {
