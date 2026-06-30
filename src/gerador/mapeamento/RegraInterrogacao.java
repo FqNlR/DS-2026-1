@@ -2,9 +2,7 @@ package gerador.mapeamento;
 
 import gerador.interpretacao.ContextoDeVoz;
 
-/**
- * '?' e '.' aumentam oitava. Se já na máxima, volta à oitava padrão da voz.
- */
+// '?' e '.' aumentam oitava. Se já na máxima, volta à oitava padrão da voz.
 public class RegraInterrogacao implements RegraDeInterpretacao {
 
     @Override

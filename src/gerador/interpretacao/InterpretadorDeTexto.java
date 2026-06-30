@@ -11,9 +11,8 @@ import gerador.dominio.Pausa;
 import gerador.dominio.Voz;
 import gerador.mapeamento.TabelaDeMapeamento;
 
-/*
-    Transforma texto em Partitura. Cada linha é uma voz independente.
-*/
+
+// Transforma texto em Partitura. Cada linha é uma voz independente.
 public class InterpretadorDeTexto {
 
     private static final Pattern PADRAO_ATRASO = Pattern.compile("^\\[(\\d+)]\\s*");

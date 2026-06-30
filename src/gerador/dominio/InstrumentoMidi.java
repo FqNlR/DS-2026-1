@@ -1,9 +1,9 @@
 package gerador.dominio;
 
-/**
- * Enum que mapeia instrumentos musicais aos seus respectivos
- * códigos General MIDI (program numbers) e nomes descritivos.
- */
+/*
+    Enum que mapeia instrumentos musicais aos seus respectivos
+    códigos General MIDI (program numbers) e nomes descritivos.
+*/
 public enum InstrumentoMidi {
 
     PIANO(0, "Piano"),
@@ -21,16 +21,12 @@ public enum InstrumentoMidi {
         this.nome = nome;
     }
 
-    /**
-     * Retorna o código (program number) General MIDI do instrumento.
-     */
+    //Retorna o código (program number) General MIDI do instrumento.
     public int getCodigo() {
         return codigo;
     }
 
-    /**
-     * Retorna o nome descritivo do instrumento.
-     */
+    //Retorna o nome descritivo do instrumento.
     public String getNome() {
         return nome;
     }

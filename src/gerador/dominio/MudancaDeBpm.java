@@ -1,9 +1,9 @@
 package gerador.dominio;
 
-/**
- * Evento de mudança de BPM. Duração 0 pois não avança o tempo musical,
- * apenas altera o andamento a partir deste ponto.
- */
+/*
+    Evento de mudança de BPM. Duração 0 pois não avança o tempo musical,
+    apenas altera o andamento a partir deste ponto.
+*/
 public class MudancaDeBpm extends EventoMusical {
 
     private final int novoBpm;
