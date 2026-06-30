@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ControladorMusical {
 
-    /** Estados possíveis do controlador. */
+    // Estados possíveis do controlador.
     public enum Estado { PARADO, REPRODUZINDO, PAUSADO }
 
     private final InterpretadorDeTexto interpretador;
@@ -29,9 +29,7 @@ public class ControladorMusical {
     private Partitura partituraAtual;
     private Estado estadoAtual;
 
-    /**
-     * Observador para notificar a UI sobre mudanças de estado e erros.
-     */
+    // Observador para notificar a UI sobre mudanças de estado e erros.
     public interface Observador {
         void aoMudarEstado(Estado novoEstado);
         void aoOcorrerErro(String mensagem);
@@ -52,9 +50,7 @@ public class ControladorMusical {
         this.observador = observador;
     }
 
-    /**
-     * Processa o texto e inicia a reprodução musical.
-     */
+    // Processa o texto e inicia a reprodução musical.
     public void iniciarReproducao(String texto, ConfiguracaoMusical configuracao) {
         try {
             // Interpretar o texto
@@ -90,9 +86,7 @@ public class ControladorMusical {
         }
     }
 
-    /**
-     * Pausa a reprodução em andamento.
-     */
+    // Pausa a reprodução em andamento.
     public void pausar() {
         if (estadoAtual == Estado.REPRODUZINDO) {
             reprodutor.pausar();
@@ -100,9 +94,7 @@ public class ControladorMusical {
         }
     }
 
-    /**
-     * Retoma a reprodução pausada.
-     */
+    // Retoma a reprodução pausada.
     public void retomar() {
         if (estadoAtual == Estado.PAUSADO) {
             reprodutor.retomar();
@@ -110,17 +102,13 @@ public class ControladorMusical {
         }
     }
 
-    /**
-     * Para a reprodução completamente.
-     */
+    // Para a reprodução completamente.
     public void parar() {
         reprodutor.parar();
         mudarEstado(Estado.PARADO);
     }
 
-    /**
-     * Exporta a partitura atual como arquivo MIDI.
-     */
+    // Exporta a partitura atual como arquivo MIDI.
     public void exportarMidi(String caminhoArquivo) {
         if (partituraAtual == null) {
             notificarErro("Nenhuma partitura gerada. Processe um texto primeiro.");
@@ -139,9 +127,7 @@ public class ControladorMusical {
         }
     }
 
-    /**
-     * Retorna o progresso atual da reprodução (0.0 a 1.0).
-     */
+    // Retorna o progresso atual da reprodução (0.0 a 1.0).
     public double getProgresso() {
         return reprodutor.getProgresso();
     }
@@ -154,14 +140,12 @@ public class ControladorMusical {
         return partituraAtual != null;
     }
 
-    /**
-     * Libera recursos de áudio ao fechar o programa.
-     */
+    // Libera recursos de áudio ao fechar o programa.
     public void liberarRecursos() {
         reprodutor.liberarRecursos();
     }
 
-    // --- Métodos privados ---
+    // Métodos privados
 
     private void mudarEstado(Estado novoEstado) {
         this.estadoAtual = novoEstado;
