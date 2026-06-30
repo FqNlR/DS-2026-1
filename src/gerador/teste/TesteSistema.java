@@ -44,9 +44,9 @@ public class TesteSistema {
         System.out.printf("  RESULTADO: %d/%d testes passaram%n",
                 testesPassaram, totalTestes);
         if (testesFalharam > 0) {
-            System.out.printf("  ⚠ %d teste(s) falharam!%n", testesFalharam);
+            System.out.printf("  %d teste(s) falharam!%n", testesFalharam);
         } else {
-            System.out.println("  ✔ Todos os testes passaram!");
+            System.out.println("  Todos os testes passaram!");
         }
         System.out.println("========================================");
     }
@@ -406,10 +406,10 @@ public class TesteSistema {
         totalTestes++;
         if (condicao) {
             testesPassaram++;
-            System.out.println("  ✔ " + descricao);
+            System.out.println("  PASSOU: " + descricao);
         } else {
             testesFalharam++;
-            System.out.println("  ✖ FALHOU: " + descricao);
+            System.out.println("  FALHOU: " + descricao);
         }
     }
 }
