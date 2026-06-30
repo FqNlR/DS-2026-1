@@ -2,10 +2,10 @@ package gerador.mapeamento;
 
 import gerador.interpretacao.ContextoDeVoz;
 
-/**
- * Dígito par: instrumento = atual + valor do dígito.
- * Dígito ímpar: troca para Tubular Bells (GM 15).
- */
+/*
+    Dígito par: instrumento = atual + valor do dígito.
+    Dígito ímpar: troca para Tubular Bells (GM 15).
+*/
 public class RegraDigito implements RegraDeInterpretacao {
 
     private static final int TUBULAR_BELLS = 15;
