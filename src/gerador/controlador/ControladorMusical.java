@@ -10,13 +10,12 @@ import gerador.mapeamento.TabelaDeMapeamento;
 
 import java.util.List;
 
-/**
- * Orquestra a interação entre a interface do usuário e os componentes
- * de interpretação e reprodução musical.
- *
- * Colabora com InterpretadorDeTexto (interpretação), SaidaMusical
- * (reprodução) e ExportadorMidi (exportação) invocando seus serviços.
- */
+/*
+    Orquestra a interação entre a interface do usuário e os componentes
+    de interpretação e reprodução musical.
+    Colabora com InterpretadorDeTexto (interpretação), SaidaMusical
+    (reprodução) e ExportadorMidi (exportação) invocando seus serviços.
+*/
 public class ControladorMusical {
 
     // Estados possíveis do controlador.
@@ -146,7 +145,6 @@ public class ControladorMusical {
     }
 
     // Métodos privados
-
     private void mudarEstado(Estado novoEstado) {
         this.estadoAtual = novoEstado;
         if (observador != null) {
