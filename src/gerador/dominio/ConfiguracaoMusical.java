@@ -27,11 +27,11 @@ public class ConfiguracaoMusical {
         this.instrumento = INSTRUMENTO_PADRAO;
     }
 
-    public ConfiguracaoMusical(int bpm, int volume, int oitava, int instrumento) {
-        this.bpm = limitarBpm(bpm);
-        this.volume = limitarVolume(volume);
-        this.oitava = limitarOitava(oitava);
-        this.instrumento = limitarInstrumento(instrumento);
+    public ConfiguracaoMusical(ParametrosConfiguracao parametros) {
+        this.bpm = limitarBpm(parametros.getBpm());
+        this.volume = limitarVolume(parametros.getVolume());
+        this.oitava = limitarOitava(parametros.getOitava());
+        this.instrumento = limitarInstrumento(parametros.getInstrumento());
     }
 
     public int getBpm() { return bpm; }
@@ -62,7 +62,7 @@ public class ConfiguracaoMusical {
     }
 
     public ConfiguracaoMusical copiar() {
-        return new ConfiguracaoMusical(bpm, volume, oitava, instrumento);
+        return new ConfiguracaoMusical(new ParametrosConfiguracao(bpm, volume, oitava, instrumento));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package gerador.teste;
 
 import gerador.dominio.*;
+import gerador.dominio.ParametrosVoz;
+import gerador.dominio.ParametrosConfiguracao;
 import gerador.interpretacao.ContextoDeVoz;
 import gerador.interpretacao.InterpretadorDeTexto;
 import gerador.mapeamento.TabelaDeMapeamento;
@@ -78,7 +80,7 @@ public class TesteSistema {
         verificar("Pausa: duração padrão", pausa.getDuracaoEmTicks() == 480);
 
         // Voz (Volume base de 100)
-        Voz voz = new Voz(0, 0, 100, 6, 6);
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6));
         voz.adicionarEvento(nota);
         voz.adicionarEvento(pausa);
         verificar("Voz: 2 eventos adicionados", voz.getTotalEventos() == 2);
@@ -103,7 +105,7 @@ public class TesteSistema {
         System.out.println("--- Mapeamento: Notas ---");
 
         TabelaDeMapeamento tabela = new TabelaDeMapeamento();
-        Voz voz = new Voz(0, 0, 100, 6, 6);
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6));
         ContextoDeVoz ctx = new ContextoDeVoz(voz, 120);
         ctx.setTextoCompleto("CDEFGABH");
 
@@ -124,7 +126,7 @@ public class TesteSistema {
         System.out.println("--- Mapeamento: Pausas (a-h minúsculas) ---");
 
         TabelaDeMapeamento tabela = new TabelaDeMapeamento();
-        Voz voz = new Voz(0, 0, 100, 6, 6);
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6));
         ContextoDeVoz ctx = new ContextoDeVoz(voz, 120);
         ctx.setTextoCompleto("abcdefgh");
 
@@ -144,7 +146,7 @@ public class TesteSistema {
         System.out.println("--- Mapeamento: Espaço (dobra volume) ---");
 
         TabelaDeMapeamento tabela = new TabelaDeMapeamento();
-        Voz voz = new Voz(0, 0, 100, 6, 6); // Volume inicial: 100
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6)); // Volume inicial: 100
         ContextoDeVoz ctx = new ContextoDeVoz(voz, 120);
         ctx.setTextoCompleto(" ");
 
@@ -160,7 +162,7 @@ public class TesteSistema {
         System.out.println("--- Mapeamento: Oitava (? e V) ---");
 
         TabelaDeMapeamento tabela = new TabelaDeMapeamento();
-        Voz voz = new Voz(0, 0, 100, 6, 6); // Oitava inicial: 6
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6)); // Oitava inicial: 6
         ContextoDeVoz ctx = new ContextoDeVoz(voz, 120);
         ctx.setTextoCompleto("?V");
 
@@ -181,7 +183,7 @@ public class TesteSistema {
         System.out.println("--- Mapeamento: Instrumentos (!, ;, ,, dígitos) ---");
 
         TabelaDeMapeamento tabela = new TabelaDeMapeamento();
-        Voz voz = new Voz(0, 0, 100, 6, 6); // Instrumento inicial: Cravo (6)
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6)); // Instrumento inicial: Cravo (6)
         ContextoDeVoz ctx = new ContextoDeVoz(voz, 120);
         ctx.setTextoCompleto("!;,24");
 
@@ -215,7 +217,7 @@ public class TesteSistema {
         System.out.println("--- Mapeamento: BPM (> e <) ---");
 
         TabelaDeMapeamento tabela = new TabelaDeMapeamento();
-        Voz voz = new Voz(0, 0, 100, 6, 6);
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6));
         ContextoDeVoz ctx = new ContextoDeVoz(voz, 120);
         ctx.setTextoCompleto("><");
 
@@ -234,7 +236,7 @@ public class TesteSistema {
         System.out.println("--- Mapeamento: Repetir ou Pausa (vogais/else) ---");
 
         TabelaDeMapeamento tabela = new TabelaDeMapeamento();
-        Voz voz = new Voz(0, 0, 100, 6, 6);
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6));
         ContextoDeVoz ctx = new ContextoDeVoz(voz, 120);
         ctx.setTextoCompleto("CI");
 
@@ -251,7 +253,7 @@ public class TesteSistema {
                 voz.getEventos().stream().allMatch(e -> e instanceof Nota));
 
         // Testar pausa quando último NÃO foi nota
-        Voz voz2 = new Voz(0, 0, 100, 6, 6);
+        Voz voz2 = new Voz(new ParametrosVoz(0, 0, 100, 6, 6));
         ContextoDeVoz ctx2 = new ContextoDeVoz(voz2, 120);
         ctx2.setTextoCompleto("aI");
 
@@ -270,7 +272,7 @@ public class TesteSistema {
         System.out.println("--- Mapeamento: Mi bemol (Mb) ---");
 
         TabelaDeMapeamento tabela = new TabelaDeMapeamento();
-        Voz voz = new Voz(0, 0, 100, 6, 6);
+        Voz voz = new Voz(new ParametrosVoz(0, 0, 100, 6, 6));
         ContextoDeVoz ctx = new ContextoDeVoz(voz, 120);
         ctx.setTextoCompleto("Mb");
 
@@ -349,12 +351,12 @@ public class TesteSistema {
     private static void testarConfiguracaoMusical() {
         System.out.println("--- ConfiguracaoMusical ---");
 
-        ConfiguracaoMusical config = new ConfiguracaoMusical(120, 100, 6, 0);
+        ConfiguracaoMusical config = new ConfiguracaoMusical(new ParametrosConfiguracao(120, 100, 6, 0));
         verificar("Config: BPM = 120", config.getBpm() == 120);
         verificar("Config: Volume = 100", config.getVolume() == 100);
 
         // Testar limites
-        ConfiguracaoMusical configLimite = new ConfiguracaoMusical(999, -1, 20, 200);
+        ConfiguracaoMusical configLimite = new ConfiguracaoMusical(new ParametrosConfiguracao(999, -1, 20, 200));
         verificar("Config: BPM limitado a 300", configLimite.getBpm() == 300);
         verificar("Config: Volume limitado a 0", configLimite.getVolume() == 0);
         verificar("Config: Oitava limitada a 9", configLimite.getOitava() == 9);
@@ -371,28 +373,28 @@ public class TesteSistema {
     private static void testarVozPadroes() {
         System.out.println("--- Voz: Padrões por número ---");
 
-        Voz voz0 = new Voz(0, 0, 100, 6, 6);
+        Voz voz0 = new Voz(new ParametrosVoz(0, 0, 100, 6, 6));
         verificar("Voz 0: oitava 6", voz0.getOitavaInicial() == 6);
         verificar("Voz 0: volume 100", voz0.getVolumeInicial() == 100);
         verificar("Voz 0: instrumento Cravo (6)", voz0.getInstrumentoInicial() == 6);
 
-        Voz voz1 = new Voz(1, 0, 100, 6, 6);
+        Voz voz1 = new Voz(new ParametrosVoz(1, 0, 100, 6, 6));
         verificar("Voz 1: oitava 5", voz1.getOitavaInicial() == 5);
         verificar("Voz 1: volume 80", voz1.getVolumeInicial() == 80);
         verificar("Voz 1: instrumento Church Organ (20)", voz1.getInstrumentoInicial() == 20);
 
-        Voz voz2 = new Voz(2, 0, 100, 6, 6);
+        Voz voz2 = new Voz(new ParametrosVoz(2, 0, 100, 6, 6));
         verificar("Voz 2: oitava 4", voz2.getOitavaInicial() == 4);
         verificar("Voz 2: volume 60", voz2.getVolumeInicial() == 60);
         verificar("Voz 2: instrumento Piano (0)", voz2.getInstrumentoInicial() == 0);
 
-        Voz voz3 = new Voz(3, 0, 100, 6, 6);
+        Voz voz3 = new Voz(new ParametrosVoz(3, 0, 100, 6, 6));
         verificar("Voz 3: oitava 3", voz3.getOitavaInicial() == 3);
         verificar("Voz 3: volume 40", voz3.getVolumeInicial() == 40);
         verificar("Voz 3: instrumento Fagote (70)", voz3.getInstrumentoInicial() == 70);
 
         // Ciclo: voz 4 = voz 0
-        Voz voz4 = new Voz(4, 0, 100, 6, 6);
+        Voz voz4 = new Voz(new ParametrosVoz(4, 0, 100, 6, 6));
         verificar("Voz 4: cicla para oitava 6", voz4.getOitavaInicial() == 6);
 
         System.out.println();

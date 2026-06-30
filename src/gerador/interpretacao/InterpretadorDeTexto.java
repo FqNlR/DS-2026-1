@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import gerador.dominio.ConfiguracaoMusical;
+import gerador.dominio.ParametrosVoz;
 import gerador.dominio.Partitura;
 import gerador.dominio.Pausa;
 import gerador.dominio.Voz;
@@ -63,7 +64,7 @@ public class InterpretadorDeTexto {
             textoParaProcessar = linha.substring(matcher.end());
         }
 
-        Voz voz = new Voz(numeroVoz, atraso, config.getVolume(), config.getInstrumento(), config.getOitava());
+        Voz voz = new Voz(new ParametrosVoz(numeroVoz, atraso, config.getVolume(), config.getInstrumento(), config.getOitava()));
         ContextoDeVoz contexto = new ContextoDeVoz(voz, config.getBpm());
         contexto.setTextoCompleto(textoParaProcessar);
 
