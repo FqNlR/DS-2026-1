@@ -5,7 +5,7 @@ import gerador.interpretacao.ContextoDeVoz;
 /*
   Fallback: se o último evento foi nota, repete-a; senão, gera pausa.
   Caracteres não-letra (símbolos como '(', '@', '#') geram aviso no log.
- */
+*/
 public class RegraRepetirOuPausa implements RegraDeInterpretacao {
 
     @Override
