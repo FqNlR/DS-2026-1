@@ -146,7 +146,6 @@ public class ControladorMusical {
     }
 
     // Métodos privados
-
     private void mudarEstado(Estado novoEstado) {
         this.estadoAtual = novoEstado;
         if (observador != null) {
