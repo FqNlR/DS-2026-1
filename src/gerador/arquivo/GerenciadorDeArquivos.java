@@ -8,21 +8,20 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/**
- * Gerencia operações de leitura e escrita de arquivos (texto e MIDI).
- * Responsabilidade única: I/O de arquivos.
- */
+/*
+    Gerencia operações de leitura e escrita de arquivos (texto e MIDI).
+    Responsabilidade única: I/O de arquivos.
+*/
 public class GerenciadorDeArquivos {
 
     private File ultimoArquivoAberto;
 
-    /**
-     * Abre um diálogo para o usuário selecionar um arquivo de texto (.txt)
-     * e retorna seu conteúdo.
-     *
-     * @param componentePai componente pai para o diálogo
-     * @return conteúdo do arquivo ou null se cancelado
-     */
+    /*
+         Abre um diálogo para o usuário selecionar um arquivo de texto (.txt)
+         e retorna seu conteúdo.
+         @param componentePai componente pai para o diálogo
+         @return conteúdo do arquivo ou null se cancelado
+    */
     public String lerArquivoTexto(java.awt.Component componentePai) {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Abrir arquivo de texto");
@@ -40,12 +39,11 @@ public class GerenciadorDeArquivos {
         }
     }
 
-    /**
-     * Salva o texto no arquivo original (se foi aberto de um arquivo).
-     *
-     * @param texto conteúdo a ser salvo
-     * @return true se salvou com sucesso
-     */
+    /*
+        Salva o texto no arquivo original (se foi aberto de um arquivo).
+        @param texto conteúdo a ser salvo
+        @return true se salvou com sucesso
+    */
     public boolean salvarTextoOriginal(String texto) {
         if (ultimoArquivoAberto == null) return false;
 
@@ -57,12 +55,11 @@ public class GerenciadorDeArquivos {
         }
     }
 
-    /**
-     * Abre um diálogo para o usuário escolher onde salvar o arquivo MIDI.
-     *
-     * @param componentePai componente pai para o diálogo
-     * @return caminho do arquivo escolhido ou null se cancelado
-     */
+    /*   
+        Abre um diálogo para o usuário escolher onde salvar o arquivo MIDI.
+        @param componentePai componente pai para o diálogo
+        @return caminho do arquivo escolhido ou null se cancelado
+    */
     public String escolherCaminhoMidi(java.awt.Component componentePai) {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Exportar arquivo MIDI");
@@ -79,9 +76,7 @@ public class GerenciadorDeArquivos {
         return caminho;
     }
 
-    /**
-     * Indica se há um arquivo de texto original associado.
-     */
+    //Indica se há um arquivo de texto original associado.
     public boolean temArquivoOriginal() {
         return ultimoArquivoAberto != null;
     }
