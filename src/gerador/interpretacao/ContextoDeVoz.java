@@ -1,6 +1,7 @@
 package gerador.interpretacao;
 
 import gerador.dominio.EventoMusical;
+import gerador.dominio.MidiConstantes;
 import gerador.dominio.MudancaDeBpm;
 import gerador.dominio.Nota;
 import gerador.dominio.Pausa;
@@ -28,14 +29,11 @@ public class ContextoDeVoz {
         NOTAS_MIDI.put("H", 10);  // Si bemol (Bb)
     }
 
-    private static final int VOLUME_MAXIMO = 127;
     private static final int NOTAS_POR_OITAVA = 12;
     private static final int OITAVA_MINIMA = 0;
     private static final int OITAVA_MAXIMA = 9;
     private static final int BPM_MINIMO = 20;
     private static final int BPM_MAXIMO = 300;
-    private static final int INSTRUMENTO_MINIMO = 0;
-    private static final int INSTRUMENTO_MAXIMO = 127;
 
     private final Voz voz;
     private int instrumentoAtual;
@@ -67,7 +65,7 @@ public class ContextoDeVoz {
         if (valorBase == null) return;
 
         int pitchMidi = (oitavaAtual + 1) * NOTAS_POR_OITAVA + valorBase;
-        pitchMidi = Math.max(0, Math.min(VOLUME_MAXIMO, pitchMidi));
+        pitchMidi = Math.max(MidiConstantes.VALOR_MINIMO, Math.min(MidiConstantes.VALOR_MAXIMO, pitchMidi));
 
         Nota nota = new Nota(pitchMidi, volumeAtual, instrumentoAtual);
         voz.adicionarEvento(nota);
@@ -91,7 +89,7 @@ public class ContextoDeVoz {
 
     public void dobrarVolume() {
         int novoVolume = volumeAtual * 2;
-        volumeAtual = Math.min(novoVolume, VOLUME_MAXIMO);
+        volumeAtual = Math.min(novoVolume, MidiConstantes.VALOR_MAXIMO);
     }
 
     public void aumentarOitava() {
@@ -111,7 +109,7 @@ public class ContextoDeVoz {
     }
 
     public void trocarInstrumento(int novoInstrumento) {
-        instrumentoAtual = Math.max(INSTRUMENTO_MINIMO, Math.min(INSTRUMENTO_MAXIMO, novoInstrumento));
+        instrumentoAtual = Math.max(MidiConstantes.VALOR_MINIMO, Math.min(MidiConstantes.VALOR_MAXIMO, novoInstrumento));
     }
 
     public void aumentarBpm(int incremento) {
