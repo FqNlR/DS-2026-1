@@ -6,18 +6,9 @@ import java.util.List;
 
 public class Voz {
 
-    private static final int VOLUME_MAXIMO_MIDI = 127;
-    private static final int VOLUME_MINIMO_MIDI = 0;
-    private static final int OITAVA_MINIMA = 0;
-    private static final int OITAVA_MAXIMA = 9;
-
     private static final int NUMERO_DE_PADROES = 4;
     private static final int[] OFFSETS_OITAVA_FUGA = {0, -1, -2, -3};
     private static final double[] PROPORCOES_VOLUME_FUGA = {1.0, 0.8, 0.6, 0.4};
-
-    private static final int INSTRUMENTO_CHURCH_ORGAN = 20;
-    private static final int INSTRUMENTO_PIANO_ACUSTICO = 0;
-    private static final int INSTRUMENTO_FAGOTE = 70;
 
     private final int numero;
     private final List<EventoMusical> eventos;
@@ -41,15 +32,15 @@ public class Voz {
     private void atribuirPadroesDeVoz(int numero, int volumeMaximo, int instrumentoBase, int oitavaBase) {
         int[] instrumentos = {
             instrumentoBase, 
-            INSTRUMENTO_CHURCH_ORGAN, 
-            INSTRUMENTO_PIANO_ACUSTICO, 
-            INSTRUMENTO_FAGOTE
+            InstrumentoMidi.CHURCH_ORGAN.getCodigo(), 
+            InstrumentoMidi.PIANO.getCodigo(), 
+            InstrumentoMidi.FAGOTE.getCodigo()
         };
 
         int indice = numero % NUMERO_DE_PADROES;
-        this.oitavaInicial = Math.max(OITAVA_MINIMA, Math.min(OITAVA_MAXIMA, oitavaBase + OFFSETS_OITAVA_FUGA[indice]));
+        this.oitavaInicial = Math.max(MidiConstantes.VALOR_MINIMO, Math.min(9, oitavaBase + OFFSETS_OITAVA_FUGA[indice]));
         this.volumeInicial = (int) Math.round(volumeMaximo * PROPORCOES_VOLUME_FUGA[indice]);
-        this.volumeInicial = Math.max(VOLUME_MINIMO_MIDI, Math.min(VOLUME_MAXIMO_MIDI, this.volumeInicial));
+        this.volumeInicial = Math.max(MidiConstantes.VALOR_MINIMO, Math.min(MidiConstantes.VALOR_MAXIMO, this.volumeInicial));
         this.instrumentoInicial = instrumentos[indice];
     }
 

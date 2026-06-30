@@ -13,6 +13,7 @@ import java.util.List;
 /*
     Orquestra a interação entre a interface do usuário e os componentes
     de interpretação e reprodução musical.
+
     Colabora com InterpretadorDeTexto (interpretação), SaidaMusical
     (reprodução) e ExportadorMidi (exportação) invocando seus serviços.
 */

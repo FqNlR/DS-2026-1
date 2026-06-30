@@ -10,9 +10,9 @@ public class Nota extends EventoMusical {
 
     public Nota(int pitchMidi, int velocity, int instrumento) {
         super(DURACAO_PADRAO);
-        this.pitchMidi = limitarValor(pitchMidi, 0, 127);
-        this.velocity = limitarValor(velocity, 0, 127);
-        this.instrumento = limitarValor(instrumento, 0, 127);
+        this.pitchMidi = limitarValor(pitchMidi, MidiConstantes.VALOR_MINIMO, MidiConstantes.VALOR_MAXIMO);
+        this.velocity = limitarValor(velocity, MidiConstantes.VALOR_MINIMO, MidiConstantes.VALOR_MAXIMO);
+        this.instrumento = limitarValor(instrumento, MidiConstantes.VALOR_MINIMO, MidiConstantes.VALOR_MAXIMO);
     }
 
     public int getPitchMidi() {

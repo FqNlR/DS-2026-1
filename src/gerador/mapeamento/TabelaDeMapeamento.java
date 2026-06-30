@@ -5,7 +5,6 @@ import java.util.List;
 import gerador.interpretacao.ContextoDeVoz;
 
 //Registra todas as regras de interpretação e as percorre em ordem de prioridade
-
 public class TabelaDeMapeamento {
 
     private final List<RegraDeInterpretacao> regras;

@@ -17,10 +17,11 @@ public class GerenciadorDeArquivos {
     private File ultimoArquivoAberto;
 
     /*
-         Abre um diálogo para o usuário selecionar um arquivo de texto (.txt)
-         e retorna seu conteúdo.
-         @param componentePai componente pai para o diálogo
-         @return conteúdo do arquivo ou null se cancelado
+        Abre um diálogo para o usuário selecionar um arquivo de texto (.txt)
+        e retorna seu conteúdo.
+     
+        @param componentePai componente pai para o diálogo
+        @return conteúdo do arquivo ou null se cancelado
     */
     public String lerArquivoTexto(java.awt.Component componentePai) {
         JFileChooser chooser = new JFileChooser();
@@ -41,6 +42,7 @@ public class GerenciadorDeArquivos {
 
     /*
         Salva o texto no arquivo original (se foi aberto de um arquivo).
+    
         @param texto conteúdo a ser salvo
         @return true se salvou com sucesso
     */
@@ -55,8 +57,9 @@ public class GerenciadorDeArquivos {
         }
     }
 
-    /*   
+    /*
         Abre um diálogo para o usuário escolher onde salvar o arquivo MIDI.
+    
         @param componentePai componente pai para o diálogo
         @return caminho do arquivo escolhido ou null se cancelado
     */
@@ -76,6 +79,7 @@ public class GerenciadorDeArquivos {
         return caminho;
     }
 
+    
     //Indica se há um arquivo de texto original associado.
     public boolean temArquivoOriginal() {
         return ultimoArquivoAberto != null;

@@ -13,6 +13,8 @@ import gerador.arquivo.GerenciadorDeArquivos;
 import gerador.controlador.ControladorMusical;
 import gerador.controlador.ControladorMusical.Estado;
 import gerador.dominio.ConfiguracaoMusical;
+import gerador.dominio.InstrumentoMidi;
+import gerador.dominio.MidiConstantes;
 
 public class TelaPrincipal extends JFrame implements ControladorMusical.Observador {
 
@@ -51,8 +53,8 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     private static final int BPM_PASSO = 5;
 
     private static final int VOLUME_INICIAL = 100;
-    private static final int VOLUME_MINIMO = 0;
-    private static final int VOLUME_MAXIMO = 127;
+    private static final int VOLUME_MINIMO = MidiConstantes.VALOR_MINIMO;
+    private static final int VOLUME_MAXIMO = MidiConstantes.VALOR_MAXIMO;
     private static final int VOLUME_PASSO = 5;
 
     private static final int OITAVA_INICIAL = 6;
@@ -374,11 +376,11 @@ public class TelaPrincipal extends JFrame implements ControladorMusical.Observad
     }
 
     private int extrairNumeroInstrumento(String item) {
-        if (item == null) return 0;
+        if (item == null) return InstrumentoMidi.PIANO.getCodigo();
         try {
             return Integer.parseInt(item.split(" - ")[0].trim());
         } catch (NumberFormatException e) {
-            return 0;
+            return InstrumentoMidi.PIANO.getCodigo();
         }
     }
 

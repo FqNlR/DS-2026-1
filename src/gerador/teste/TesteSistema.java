@@ -11,7 +11,7 @@ import java.util.List;
     Testes unitários manuais para o sistema.
     Verifica o funcionamento correto dos TADs, do mapeamento
     e do interpretador de texto.
- 
+
     Execução: java -cp out gerador.teste.TesteSistema
 */
 public class TesteSistema {

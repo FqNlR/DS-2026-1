@@ -5,15 +5,15 @@ public class ConfiguracaoMusical {
     public static final int BPM_PADRAO = 120;
     public static final int VOLUME_PADRAO = 100;
     public static final int OITAVA_PADRAO = 6;
-    public static final int INSTRUMENTO_PADRAO = 0;
-    public static final int VOLUME_MAXIMO = 127;
+    public static final int INSTRUMENTO_PADRAO = InstrumentoMidi.PIANO.getCodigo();
+    public static final int VOLUME_MAXIMO = MidiConstantes.VALOR_MAXIMO;
     public static final int OITAVA_MAXIMA = 9;
     public static final int OITAVA_MINIMA = 0;
     public static final int BPM_MINIMO = 20;
     public static final int BPM_MAXIMO = 300;
-    public static final int VOLUME_MINIMO = 0;
-    public static final int INSTRUMENTO_MINIMO = 0;
-    public static final int INSTRUMENTO_MAXIMO = 127;
+    public static final int VOLUME_MINIMO = MidiConstantes.VALOR_MINIMO;
+    public static final int INSTRUMENTO_MINIMO = MidiConstantes.VALOR_MINIMO;
+    public static final int INSTRUMENTO_MAXIMO = MidiConstantes.VALOR_MAXIMO;
 
     private int bpm;
     private int volume;
@@ -56,7 +56,7 @@ public class ConfiguracaoMusical {
         return Math.max(OITAVA_MINIMA, Math.min(OITAVA_MAXIMA, valor));
     }
 
-    //127 é o valor máximo perimitido pelo general MIDI
+    // O valor máximo é definido por MidiConstantes.VALOR_MAXIMO (General MIDI)
     private static int limitarInstrumento(int valor) {
         return Math.max(INSTRUMENTO_MINIMO, Math.min(INSTRUMENTO_MAXIMO, valor));
     }

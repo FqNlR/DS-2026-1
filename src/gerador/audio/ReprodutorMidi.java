@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sound.midi.*;
 
 import gerador.dominio.*;
+import gerador.dominio.MidiConstantes;
 
 public class ReprodutorMidi implements SaidaMusical {
 
@@ -14,7 +15,6 @@ public class ReprodutorMidi implements SaidaMusical {
     private boolean pausado;
 
     private static final int MAX_VOZES = 15;
-    private static final int CANAL_PERCUSSAO = 9;
     private static final int TIPO_META_MESSAGE_TEMPO = 0x51;
     private static final int MICROSEGUNDOS_POR_MINUTO = 60_000_000;
     private static final int TAMANHO_MENSAGEM_TEMPO = 3;
@@ -108,7 +108,7 @@ public class ReprodutorMidi implements SaidaMusical {
 
         for (int i = 0; i < vozes.size() && i < MAX_VOZES; i++) {
             Voz voz = vozes.get(i);
-            int canal = (i >= CANAL_PERCUSSAO) ? i + 1 : i; // Pula canal de percussão
+            int canal = (i >= MidiConstantes.CANAL_PERCUSSAO) ? i + 1 : i; // Pula canal de percussão
             Track track = sequence.createTrack();
 
             adicionarEventosDaVoz(track, trilhaGlobal, voz, canal, partitura.getConfiguracao());

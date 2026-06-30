@@ -1,10 +1,9 @@
 package gerador.mapeamento;
 
+import gerador.dominio.InstrumentoMidi;
 import gerador.interpretacao.ContextoDeVoz;
 
 public class RegraExclamacao implements RegraDeInterpretacao {
-
-    private static final int HARMONICA = 22;
 
     @Override
     public boolean aplicavel(char caractere, ContextoDeVoz contexto) {
@@ -13,6 +12,6 @@ public class RegraExclamacao implements RegraDeInterpretacao {
 
     @Override
     public void aplicar(char caractere, ContextoDeVoz contexto) {
-        contexto.trocarInstrumento(HARMONICA);
+        contexto.trocarInstrumento(InstrumentoMidi.HARMONICA.getCodigo());
     }
 }
